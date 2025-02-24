@@ -66,16 +66,25 @@ def close_db(error):
 
 @app.route('/')
 def show_entries():
+
     db = get_db()
-    cur = db.execute('select title, text from entries order by id desc')
-    entries = cur.fetchall()
+
+    category = request.args.get('category')
+
+    categories = db.execute('SELECT DISTINCT category FROM entries ').fetchall()
+
+    if category:
+        entries = db.execute('SELECT title, category, text FROM entries WHERE category = ?', (category,)).fetchall()
+    else:
+        entries = db.execute('SELECT title, text FROM entries ORDER BY title DESC').fetchall()
+
     return render_template('show_entries.html', entries=entries)
 
 
 @app.route('/add', methods=['POST'])
 def add_entry():
     db = get_db()
-    db.execute('insert into entries (title, text) values (?, ?， ？)',
+    db.execute('insert into entries (title, text) values (?, ?, ?)',
                [request.form['title'], request.form['category'], request.form['text']])
     db.commit()
     flash('New entry was successfully posted')

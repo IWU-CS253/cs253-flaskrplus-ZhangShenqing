@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 {% block body %}
+
+  <form method = "get" action = "{{ url_for('show_entries') }}" >
+    <select name = "category">
+      <option value = "">All Catefories</option>
+      {% for category in categories %}
+        <option value = "{{ cate.category }}">{{ cate.category} }</option>
+      {% endfor %}
+    </select>
+    <button type = "submit">Submit</button>
+  </form>
+
+
   <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
     <dl>
       <dt>Title:
@@ -11,13 +23,17 @@
       <dd><input type="submit" value="Share">
     </dl>
   </form>
+
+
   <ul class="entries">
   {% for entry in entries %}
     <li><h2>{{ entry.title }}</h2>
-        {{ entry.category }}
+        <p>{{ entry.category }}</p>
         {{ entry.text|safe }}</li>
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em></li>
   {% endfor %}
   </ul>
+
+
 {% endblock %}
