@@ -26,14 +26,29 @@
 
 
   <ul class="entries">
+
   {% for entry in entries %}
+
     <li><h2>{{ entry.title }}</h2>
         <p>{{ entry.category }}</p>
         {{ entry.text|safe }}</li>
+
+    <form action = "{{ url_for('delete_entry', entry_id_no = entry.id) }}" method = "post">
+      <button type = "submit">Delete the post</button>
+    </form>
+
   {% else %}
     <li><em>Unbelievable.  No entries here so far</em></li>
+
   {% endfor %}
+
   </ul>
 
 
 {% endblock %}
+
+<script>
+  function deleteAlert() {
+      alert("Your selected data is deleted.");
+  }
+</script>

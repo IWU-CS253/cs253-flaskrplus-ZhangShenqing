@@ -89,3 +89,10 @@ def add_entry():
     db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
+
+
+@app.route('/delete/', methods=['POST'])
+def del_it(entry_id):
+    db = get_db()
+    db.execute('DELETE FROM entries WHERE id = ?', [entry_id])
+    db.commit()
